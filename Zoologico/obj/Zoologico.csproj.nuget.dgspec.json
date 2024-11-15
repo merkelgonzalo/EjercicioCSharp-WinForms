@@ -1,17 +1,89 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gonza\\source\\repos\\Zoologico\\Zoologico\\Zoologico.csproj": {}
+    "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Zoologico\\Zoologico.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gonza\\source\\repos\\Zoologico\\Zoologico\\Zoologico.csproj": {
+    "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Business\\Business.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gonza\\source\\repos\\Zoologico\\Zoologico\\Zoologico.csproj",
-        "projectName": "Zoologico",
-        "projectPath": "C:\\Users\\gonza\\source\\repos\\Zoologico\\Zoologico\\Zoologico.csproj",
+        "projectUniqueName": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Business\\Business.csproj",
+        "projectName": "Business",
+        "projectPath": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Business\\Business.csproj",
         "packagesPath": "C:\\Users\\gonza\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gonza\\source\\repos\\Zoologico\\Zoologico\\obj\\",
+        "outputPath": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Business\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\gonza\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {
+              "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Models\\Models.csproj": {
+                "projectPath": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Models\\Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WindowsForms": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Models\\Models.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Models\\Models.csproj",
+        "projectName": "Models",
+        "projectPath": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Models\\Models.csproj",
+        "packagesPath": "C:\\Users\\gonza\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Models\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -68,7 +140,82 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Zoologico\\Zoologico.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Zoologico\\Zoologico.csproj",
+        "projectName": "Zoologico",
+        "projectPath": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Zoologico\\Zoologico.csproj",
+        "packagesPath": "C:\\Users\\gonza\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Zoologico\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\gonza\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {
+              "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Business\\Business.csproj": {
+                "projectPath": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Business\\Business.csproj"
+              },
+              "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Models\\Models.csproj": {
+                "projectPath": "C:\\Users\\gonza\\source\\repos\\EjercicioCSharp-WinForms\\Models\\Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WindowsForms": {
+              "privateAssets": "none"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

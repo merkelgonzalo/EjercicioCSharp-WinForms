@@ -14,6 +14,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Zoologico
-build_property.ProjectDir = C:\Users\gonza\source\repos\Zoologico\Zoologico\
+build_property.ProjectDir = C:\Users\gonza\source\repos\EjercicioCSharp-WinForms\Zoologico\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
