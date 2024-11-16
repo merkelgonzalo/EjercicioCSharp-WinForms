@@ -10,6 +10,7 @@ namespace Zoologico
         private List<Empleado> listaEmpleados = new List<Empleado>();
         // Diccionario para almacenar el tiempo de inicio de tareas, usando una clave compuesta de tarea y número de empleado
         private Dictionary<(string, int), DateTime> tiempoInicioTarea = new Dictionary<(string, int), DateTime>();
+        
         public FormularioEmpleado()
         {
             InitializeComponent();
@@ -24,6 +25,7 @@ namespace Zoologico
             buttonLimpiarBebederos.Enabled = false;
             buttonLimpiarPasillos.Enabled = false;
         }
+
         private void CargarSectores()
         {
             // Se carga los valores del enumerador SectorEmpleado en el ComboBox
@@ -55,51 +57,62 @@ namespace Zoologico
                 return;
             }
 
-            // VAlidacion de nro de empleado
-            int numeroEmpleado;
-            if (!int.TryParse(textBoxNumeroEmpleado.Text, out numeroEmpleado) ||
-                listaEmpleados.Any(emp => emp.NumeroEmpleado == numeroEmpleado))
+            // Validar que el número de empleado sea un número válido
+            if (!int.TryParse(textBoxNumeroEmpleado.Text, out int numeroEmpleado))
             {
-                MessageBox.Show("El Número de Empleado es inválido o ya se asignó.");
+                MessageBox.Show("El número de empleado debe ser un número válido.");
                 return;
             }
 
-            // Obtener los datos ingresados en los TextBoxes
-            string nombre = textBoxNombre.Text;
-            string apellido = textBoxApellido.Text;
-            string dni = textBoxDni.Text;
-            string email = textBoxEmail.Text;
-            ESectorEmpleado sector = (ESectorEmpleado)comboBoxSector.SelectedItem;
-
-            // Crear un objeto Empleado dependiendo del sector seleccionado
-            Empleado empleado;
-            switch (sector)
+            try
             {
-                case ESectorEmpleado.Acuatico:
-                    empleado = new EmpleadoAcuatico(nombre, apellido, numeroEmpleado, dni, email);
-                    break;
-                case ESectorEmpleado.Felinos:
-                    empleado = new EmpleadoFelinos(nombre, apellido, numeroEmpleado, dni, email);
-                    break;
-                case ESectorEmpleado.Aves:
-                    empleado = new EmpleadoAves(nombre, apellido, numeroEmpleado, dni, email);
-                    break;
-                default:
-                    MessageBox.Show("Sector no válido.");
-                    return;
+                // Obtener los datos ingresados en los TextBoxes
+                string nombre = textBoxNombre.Text;
+                string apellido = textBoxApellido.Text;
+                string dni = textBoxDni.Text;
+                string email = textBoxEmail.Text;
+                ESectorEmpleado sector = (ESectorEmpleado)comboBoxSector.SelectedItem;
+
+                // Crear instancia del empleado
+                Empleado nuevoEmpleado = new EmpleadoGeneral(nombre, apellido, numeroEmpleado, dni, email, sector);
+
+                // Llamar a EmpleadoService para agregar al empleado
+                EmpleadoService empleadoService = new EmpleadoService(); // Asegúrate de que esta instancia esté configurada correctamente
+                bool res = empleadoService.AgregarEmpleado(nuevoEmpleado);
+
+                if (res)
+                {
+                    // Agregar el empleado al DataGridView
+                    dataGridViewEmpleados.Rows.Add(
+                        nuevoEmpleado.NumeroEmpleado,
+                        nuevoEmpleado.Nombre,
+                        nuevoEmpleado.Apellido,
+                        nuevoEmpleado.Sector,
+                        nuevoEmpleado.Dni,
+                        nuevoEmpleado.Email
+                    );
+
+                    // Mostrar la información del empleado ingresado en un MessageBox
+                    MessageBox.Show($"Empleado creado:\nNombre: {nuevoEmpleado.Nombre} {nuevoEmpleado.Apellido}\n" +
+                                    $"Número de Empleado: {nuevoEmpleado.NumeroEmpleado}\nSector: {nuevoEmpleado.Sector}\n" +
+                                    $"DNI: {nuevoEmpleado.Dni}\nEmail: {nuevoEmpleado.Email}", "Empleado Guardado");
+
+                }
+                else
+                {
+                    MessageBox.Show("Ya existe un empleado con el mismo Número de Empleado o DNI");
+                }
+                
             }
+            catch (Exception ex)
+            {
+                // Mostrar mensaje de error en caso de problemas (por ejemplo, duplicados)
+                MessageBox.Show($"Error al agregar empleado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-            // Agregar el empleado a la lista y al DataGridView
-            listaEmpleados.Add(empleado);
-            dataGridViewEmpleados.Rows.Add(empleado.NumeroEmpleado, empleado.Nombre, empleado.Apellido, empleado.Sector, empleado.Dni, empleado.Email);
-
-            // Mostrar la información del empleado ingresado en un MessageBox
-            MessageBox.Show($"Empleado creado:\nNombre: {empleado.Nombre} {empleado.Apellido}\n" +
-                            $"Número de Empleado: {empleado.NumeroEmpleado}\nSector: {empleado.Sector}\n" +
-                            $"DNI: {empleado.Dni}\nEmail: {empleado.Email}", "Empleado Guardado");
-
-            // Limpiar los campos después de agregar
-            LimpiarCampos();
+        // Limpiar los campos después de agregar
+        LimpiarCampos();
         }
 
         private void LimpiarCampos()
@@ -109,7 +122,7 @@ namespace Zoologico
             textBoxNumeroEmpleado.Clear();
             textBoxDni.Clear();
             textBoxEmail.Clear();
-            comboBoxSector.SelectedIndex = 0;
+            comboBoxSector.SelectedIndex = -1;
         }
 
         private void dataGridViewEmpleados_SelectionChanged(object sender, EventArgs e)
