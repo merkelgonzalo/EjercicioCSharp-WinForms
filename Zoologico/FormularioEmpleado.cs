@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Models;
+using Business;
 
 namespace Zoologico
 {
-    public partial class FormularioEmpleado : Form, ITarea
+    public partial class FormularioEmpleado : Form
     {
         private List<Empleado> listaEmpleados = new List<Empleado>();
         // Diccionario para almacenar el tiempo de inicio de tareas, usando una clave compuesta de tarea y número de empleado
@@ -77,7 +79,7 @@ namespace Zoologico
                 Empleado nuevoEmpleado = new EmpleadoGeneral(nombre, apellido, numeroEmpleado, dni, email, sector);
 
                 // Llamar a EmpleadoService para agregar al empleado
-                EmpleadoService empleadoService = new EmpleadoService(); // Asegúrate de que esta instancia esté configurada correctamente
+                EmpleadoService empleadoService = new EmpleadoService();
                 bool res = empleadoService.AgregarEmpleado(nuevoEmpleado);
 
                 if (res)
@@ -97,6 +99,9 @@ namespace Zoologico
                                     $"Número de Empleado: {nuevoEmpleado.NumeroEmpleado}\nSector: {nuevoEmpleado.Sector}\n" +
                                     $"DNI: {nuevoEmpleado.Dni}\nEmail: {nuevoEmpleado.Email}", "Empleado Guardado");
 
+                    // Limpiar los campos después de agregar
+                    LimpiarCampos();
+
                 }
                 else
                 {
@@ -109,10 +114,6 @@ namespace Zoologico
                 // Mostrar mensaje de error en caso de problemas (por ejemplo, duplicados)
                 MessageBox.Show($"Error al agregar empleado: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        // Limpiar los campos después de agregar
-        LimpiarCampos();
         }
 
         private void LimpiarCampos()
@@ -176,47 +177,6 @@ namespace Zoologico
             }
         }
 
-        // Método para iniciar una tarea
-        public async void IniciarTarea(string nombreTarea, int numeroEmpleado)
-        {
-            // Guardar el tiempo de inicio con la clave compuesta de tarea y número de empleado
-            tiempoInicioTarea[(nombreTarea, numeroEmpleado)] = DateTime.Now;
-            MessageBox.Show($"Empleado con N° {numeroEmpleado} ha iniciado la tarea: '{nombreTarea}' a las {DateTime.Now}");
-
-            // Esperar un tiempo para simular duración de la tarea
-            await Task.Delay(5000);
-
-            // Llamar automáticamente a FinalizarTarea después de la espera
-            FinalizarTarea(nombreTarea, numeroEmpleado);
-        }
-
-        // Método para finalizar una tarea, registrando el tiempo de finalización
-        public void FinalizarTarea(string nombreTarea, int numeroEmpleado)
-        {
-            // Verificar si la tarea fue iniciada
-            var claveTarea = (nombreTarea, numeroEmpleado);
-            if (tiempoInicioTarea.ContainsKey(claveTarea))
-            {
-                DateTime tiempoInicio = tiempoInicioTarea[claveTarea];
-                DateTime tiempoFinal = DateTime.Now;
-                TimeSpan duracion = tiempoFinal - tiempoInicio;
-
-                // Mostrar el mensaje de finalización en la consola
-                MessageBox.Show($"Empleado con N° {numeroEmpleado} ha finalizado la tarea: '{nombreTarea}' a las {tiempoFinal} - Duración: {duracion.TotalSeconds} segundos.");
-
-                // Registrar la tarea en ReporteProductividad
-                var reporteProductividad = ReporteProductividad.Instancia;
-                reporteProductividad.RegistrarTarea(numeroEmpleado.ToString(), duracion);
-
-                // Eliminar el registro de la tarea finalizada
-                tiempoInicioTarea.Remove(claveTarea);
-            }
-            else
-            {
-                MessageBox.Show($"No se ha iniciado la tarea '{nombreTarea}' para el empleado N° {numeroEmpleado}, por lo que no se puede finalizar.");
-            }
-        }
-
         private void buttonLimpiarEstanque_Click(object sender, EventArgs e)
         {
             // Verificar si hay una fila seleccionada en el DataGridView
@@ -225,13 +185,14 @@ namespace Zoologico
                 // Obtener el NumeroEmpleado de la fila seleccionada
                 int numeroEmpleado = Convert.ToInt32(dataGridViewEmpleados.SelectedRows[0].Cells["Número Empleado"].Value);
 
-                // Llamar a IniciarTarea con el nombre de la tarea y el número de empleado
-                IniciarTarea("Limpiar Estanque", numeroEmpleado);
+                accionTareas("Limpiar Estanque", numeroEmpleado);
+
             }
             else
             {
-                Console.WriteLine("Seleccione un empleado del listado para asignar la tarea.");
+                MessageBox.Show("Seleccione un empleado del listado para asignar la tarea.");
             }
+
         }
 
         private void buttonAlimentarEstanque_Click(object sender, EventArgs e)
@@ -242,12 +203,12 @@ namespace Zoologico
                 // Obtener el NumeroEmpleado de la fila seleccionada
                 int numeroEmpleado = Convert.ToInt32(dataGridViewEmpleados.SelectedRows[0].Cells["Número Empleado"].Value);
 
-                // Llamar a IniciarTarea con el nombre de la tarea y el número de empleado
-                IniciarTarea("Alimentar Estanque", numeroEmpleado);
+                accionTareas("Alimentar Estanque", numeroEmpleado);
+
             }
             else
             {
-                Console.WriteLine("Seleccione un empleado del listado para asignar la tarea.");
+                MessageBox.Show("Seleccione un empleado del listado para asignar la tarea.");
             }
         }
 
@@ -259,12 +220,12 @@ namespace Zoologico
                 // Obtener el NumeroEmpleado de la fila seleccionada
                 int numeroEmpleado = Convert.ToInt32(dataGridViewEmpleados.SelectedRows[0].Cells["Número Empleado"].Value);
 
-                // Llamar a IniciarTarea con el nombre de la tarea y el número de empleado
-                IniciarTarea("Limpiar Jaulas", numeroEmpleado);
+                accionTareas("Limpiar Jaulas", numeroEmpleado);
+
             }
             else
             {
-                Console.WriteLine("Seleccione un empleado del listado para asignar la tarea.");
+                MessageBox.Show("Seleccione un empleado del listado para asignar la tarea.");
             }
         }
 
@@ -276,12 +237,12 @@ namespace Zoologico
                 // Obtener el NumeroEmpleado de la fila seleccionada
                 int numeroEmpleado = Convert.ToInt32(dataGridViewEmpleados.SelectedRows[0].Cells["Número Empleado"].Value);
 
-                // Llamar a IniciarTarea con el nombre de la tarea y el número de empleado
-                IniciarTarea("Alimentar Felinos", numeroEmpleado);
+                accionTareas("Alimentar Felinos", numeroEmpleado);
+
             }
             else
             {
-                Console.WriteLine("Seleccione un empleado del listado para asignar la tarea.");
+                MessageBox.Show("Seleccione un empleado del listado para asignar la tarea.");
             }
         }
 
@@ -293,12 +254,12 @@ namespace Zoologico
                 // Obtener el NumeroEmpleado de la fila seleccionada
                 int numeroEmpleado = Convert.ToInt32(dataGridViewEmpleados.SelectedRows[0].Cells["Número Empleado"].Value);
 
-                // Llamar a IniciarTarea con el nombre de la tarea y el número de empleado
-                IniciarTarea("Sacar Felinos", numeroEmpleado);
+                accionTareas("Sacar Felinos", numeroEmpleado);
+
             }
             else
             {
-                Console.WriteLine("Seleccione un empleado del listado para asignar la tarea.");
+                MessageBox.Show("Seleccione un empleado del listado para asignar la tarea.");
             }
         }
 
@@ -310,29 +271,48 @@ namespace Zoologico
                 // Obtener el NumeroEmpleado de la fila seleccionada
                 int numeroEmpleado = Convert.ToInt32(dataGridViewEmpleados.SelectedRows[0].Cells["Número Empleado"].Value);
 
-                // Llamar a IniciarTarea con el nombre de la tarea y el número de empleado
-                IniciarTarea("Limpiar Bebederos", numeroEmpleado);
+                accionTareas("Limpiar Bebederos", numeroEmpleado);
+
             }
             else
             {
-                Console.WriteLine("Seleccione un empleado del listado para asignar la tarea.");
+                MessageBox.Show("Seleccione un empleado del listado para asignar la tarea.");
             }
         }
 
         private void buttonLimpiarPasillos_Click(object sender, EventArgs e)
         {
-            // Verificar si hay una fila seleccionada en el DataGridView
+            /// Verificar si hay una fila seleccionada en el DataGridView
             if (dataGridViewEmpleados.SelectedRows.Count > 0)
             {
                 // Obtener el NumeroEmpleado de la fila seleccionada
                 int numeroEmpleado = Convert.ToInt32(dataGridViewEmpleados.SelectedRows[0].Cells["Número Empleado"].Value);
 
-                // Llamar a IniciarTarea con el nombre de la tarea y el número de empleado
-                IniciarTarea("Limpiar Pasillos", numeroEmpleado);
+                accionTareas("Limpiar Pasillos", numeroEmpleado);
+
             }
             else
             {
-                Console.WriteLine("Seleccione un empleado del listado para asignar la tarea.");
+                MessageBox.Show("Seleccione un empleado del listado para asignar la tarea.");
+            }
+        }
+
+        private void accionTareas (string nombreTarea, int numeroEmpleado)
+        {
+            try
+            {
+                // Crear instancia de tarea
+                Tarea nuevaTarea = new TareaGeneral(nombreTarea, numeroEmpleado);
+
+                // Llamar a EmpleadoService para agregar al empleado
+                tareaService = new TareaService();
+                bool res = tareaService.IniciarTarea(nuevaTarea);
+
+            }
+            catch (Exception ex)
+            {
+                // Mostrar mensaje de error en caso de problemas (por ejemplo, duplicados)
+                MessageBox.Show($"Error al hacer la tarea: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -16,53 +16,59 @@ namespace Business
             tareasCompletadas = new List<Tarea>();
         }
 
-        public void IniciarTarea(int idEmpleado, string nombreTarea)
+        public void IniciarTarea(string nombreTarea, int numeroEmpleado)
         {
-            if (!tareasEnProgreso.ContainsKey(idEmpleado))
+            if (!tareasEnProgreso.ContainsKey(numeroEmpleado))
             {
-                tareasEnProgreso[idEmpleado] = new Dictionary<string, DateTime>();
+                tareasEnProgreso[numeroEmpleado] = new Dictionary<string, DateTime>();
             }
 
-            if (tareasEnProgreso[idEmpleado].ContainsKey(nombreTarea))
+            if (tareasEnProgreso[numeroEmpleado].ContainsKey(nombreTarea))
             {
-                throw new InvalidOperationException($"El empleado {idEmpleado} ya tiene la tarea '{nombreTarea}' en progreso.");
+                throw new InvalidOperationException($"El empleado {numeroEmpleado} ya tiene la tarea '{nombreTarea}' en progreso.");
             }
 
-            tareasEnProgreso[idEmpleado][nombreTarea] = DateTime.Now;
-            Console.WriteLine($"Empleado {idEmpleado} inició la tarea '{nombreTarea}' a las {DateTime.Now}.");
+            tareasEnProgreso[numeroEmpleado][nombreTarea] = DateTime.Now;
+            MessageBox.Show($"Empleado {numeroEmpleado} inició la tarea '{nombreTarea}'.");
+
+            FinalizarTarea(nombreTarea, numeroEmpleado);
         }
 
-        public TimeSpan FinalizarTarea(int idEmpleado, string nombreTarea)
+        public bool FinalizarTarea(string nombreTarea, int numeroEmpleado)
         {
-            if (!tareasEnProgreso.ContainsKey(idEmpleado) || !tareasEnProgreso[idEmpleado].ContainsKey(nombreTarea))
+            if (!tareasEnProgreso.ContainsKey(numeroEmpleado) || !tareasEnProgreso[numeroEmpleado].ContainsKey(nombreTarea))
             {
-                throw new KeyNotFoundException($"La tarea '{nombreTarea}' para el empleado {idEmpleado} no se encontró en progreso.");
+                throw new KeyNotFoundException($"La tarea '{nombreTarea}' para el empleado {numeroEmpleado} no se encontró en progreso.");
             }
 
             // Calcular duración de la tarea
-            DateTime inicio = tareasEnProgreso[idEmpleado][nombreTarea];
-            DateTime fin = DateTime.Now;
-            TimeSpan duracion = fin - inicio;
+            switch (nombreTarea)
+            {
+                case "Limpiar Estanque": double duracion = 10.0;
+                    break;
+                case "Alimentar Estanque": double duracion = 5.0;
+                    break;
+            }
 
             // Registrar tarea como completada
             var tareaCompletada = new Tarea
             {
                 Nombre = nombreTarea,
                 Duracion = duracion,
-                EmpleadoId = idEmpleado,
-                FechaCompletada = fin
+                NumeroEmpleado = numeroEmpleado,
+                //FechaCompletada = fin
             };
             tareasCompletadas.Add(tareaCompletada);
 
             // Eliminar la tarea de las tareas en progreso
             tareasEnProgreso[idEmpleado].Remove(nombreTarea);
-            if (tareasEnProgreso[idEmpleado].Count == 0)
+            if (tareasEnProgreso[numeroEmpleado].Count == 0)
             {
-                tareasEnProgreso.Remove(idEmpleado);
+                tareasEnProgreso.Remove(numeroEmpleado);
             }
 
-            Console.WriteLine($"Empleado {idEmpleado} finalizó la tarea '{nombreTarea}' a las {fin}. Duración: {duracion.TotalMinutes} minutos.");
-            return duracion;
+            MessageBox.Show($"Empleado {numeroEmpleado} finalizó la tarea '{nombreTarea}'. Duración: {duracion} segundos.");
+            return true;
         }
 
         public List<Tarea> ObtenerTareasCompletadas()

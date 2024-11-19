@@ -4,12 +4,12 @@ namespace Models
     {
         public string NombreTarea { get; set; }
 
-        public TimeSpan Duracion { get; set; }
+        public double Duracion { get; set; }
 
         public Empleado Empleado { get; set; }
 
 
-        public Tarea(string nombreTarea, TimeSpan duracion, Empleado empleado)
+        public Tarea(string nombreTarea, double duracion, Empleado empleado)
         {
             NombreTarea = nombreTarea;
             Duracion = duracion;
@@ -18,7 +18,7 @@ namespace Models
 
         public override string ToString()
         {
-            return $"Tarea: {NombreTarea}, Duración: {Duracion.TotalMinutes} minutos, Empleado: {Empleado.Nombre} {Empleado.Apellido}";
+            return $"Tarea: {NombreTarea}, Empleado: {Empleado.Nombre} {Empleado.Apellido}";
         }
     }
 }
